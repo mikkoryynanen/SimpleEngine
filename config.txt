@@ -1,0 +1,4 @@
+Title:My SFML Game
+WindowHeight:600
+WindowWidth:800
+MaxFramerate:144
