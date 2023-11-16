@@ -2,11 +2,6 @@
 #include "state/IntroState.hpp"
 #include <thread>
 
-Engine::~Engine()
-{
-
-}
-
 Engine::Engine()
 {
     // Load config file
@@ -15,7 +10,6 @@ Engine::Engine()
     ConfigReader configReader;
     if(!configReader.load())
     {
-        stop();
         window.close();
 
         std::cout << "Failed to load config file" << std::endl;
@@ -26,8 +20,6 @@ Engine::Engine()
             std::stoi(configReader.getValue("WindowWidth"))),
                   configReader.getValue("Title"));
     window.setFramerateLimit(std::stoi(configReader.getValue("MaxFramerate")));
-
-    isRunning = true;
 }
 
 bool Engine::start()
@@ -47,7 +39,6 @@ bool Engine::start()
 //    stateMachineThread.detach();
 
     // 3. And start new state by doing the following
-    stateMachine.quit();
     stateMachine.nextState();
     stateMachine.update();
 

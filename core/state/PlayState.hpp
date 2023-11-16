@@ -6,12 +6,7 @@
 
 #include "../components/GameObject.h"
 #include "SFML/Graphics/Color.hpp"
-#include "../components/Player.hpp"
-#include "../events/NoInput.hpp"
-#include "../events/KeyDown.hpp"
-#include "../events/KeyUp.hpp"
-#include "../events/KeyLeft.hpp"
-#include "../events/KeyRight.hpp"
+#include "../entities/Player.hpp"
 
 #include "../systems/MoveSystem.h"
 #include "../systems/GameTimeSystem.hpp"
@@ -24,7 +19,6 @@ class PlayState final : public State
 {
 private:
     entt::registry registry;
-    entt::dispatcher dispatcher;
 
     GameTimeSystem timeSystem;
     MoveSystem moveSystem;

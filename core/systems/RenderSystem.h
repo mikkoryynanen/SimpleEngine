@@ -9,6 +9,6 @@
 class RenderSystem
 {
 public:
-    void update(entt::registry& registry, sf::RenderWindow& window, float deltaTime);
+    void update(entt::registry& registry, sf::RenderWindow& window);
 };
 

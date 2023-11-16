@@ -14,7 +14,6 @@ private:
 public:
     void nextState();
     void previousState();
-    void quit();
 
     void update();
     void build(std::unique_ptr<State> newState);

@@ -2,6 +2,7 @@
 
 void StateMachine::nextState()
 {
+    states.top()->quit();
     if(!states.empty())
     {
         states.pop();
@@ -22,9 +23,4 @@ void StateMachine::update()
 void StateMachine::build(std::unique_ptr<State> newState)
 {
     states.push(std::move(newState));
-}
-
-void StateMachine::quit()
-{
-    states.top()->quit();
 }

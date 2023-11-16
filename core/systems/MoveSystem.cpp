@@ -1,43 +1,48 @@
+#include <iostream>
 #include "MoveSystem.h"
 
-// TODO This does not work when moved to header for some reason...
-#include "../Engine.h"
 
-
-void MoveSystem::update(entt::registry &registry, float deltaTime, sf::Window &window)
+void MoveSystem::update(entt::registry& registry, float deltaTime, sf::Window& window)
 {
-    const float accelerationValue = 450.f;
+    constexpr float accelerationValue = 550.f;
 
-    auto view = registry.view<Player, GameObject>();
+    auto view = registry.view<IInputable, GameObject>();
 
     for(auto entity: view) {
         auto& gameObject = view.get<GameObject>(entity);
+        auto& sprite = gameObject.getSprite();
         sf::Vector2f movement(0.0f, 0.0f);
 
-        if(inputVector.x > 0)
-            movement.x -= accelerationValue;
-        if(inputVector.x < 0)
-            movement.x += accelerationValue;
-        if(inputVector.y > 0)
-            movement.y -= accelerationValue;
-        if(inputVector.y < 0)
-            movement.y += accelerationValue;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            inputVector.y = -1;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            inputVector.y = 1;
+        else
+            inputVector.y = 0;
 
-        gameObject.getSprite().move(movement * deltaTime);
-        auto textureSize = gameObject.getSprite().getTextureRect();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            inputVector.x = -1;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            inputVector.x = 1;
+        else
+            inputVector.x = 0;
 
-//        std::cout << gameObject.getSprite().getPosition().x << " of " << window.getSize().x << std::endl;
-        std::cout << gameObject.getSprite().getPosition().y << " of " << window.getSize().y << std::endl;
+//        std::cout << inputVector.x << inputVector.y << std::endl;
+
+        sprite.move(
+                inputVector.x * accelerationValue * deltaTime,
+                inputVector.y * accelerationValue * deltaTime);
 
         // Clamp movement
-        if(gameObject.getSprite().getPosition().x + textureSize.width > window.getSize().x)
-            gameObject.getSprite().setPosition(window.getSize().x - textureSize.width, gameObject.getSprite().getPosition().y);
-        if(gameObject.getSprite().getPosition().x < 0)
-            gameObject.getSprite().setPosition(0, gameObject.getSprite().getPosition().y);
+        auto textureSize = sprite.getTextureRect();
+        if(sprite.getPosition().x + textureSize.width > window.getSize().x)
+            sprite.setPosition(window.getSize().x - textureSize.width, sprite.getPosition().y);
+        if(sprite.getPosition().x < 0)
+            sprite.setPosition(0, sprite.getPosition().y);
 
-        if(gameObject.getSprite().getPosition().y + textureSize.height > window.getSize().y)
-            gameObject.getSprite().setPosition(gameObject.getSprite().getPosition().x, window.getSize().y - textureSize.height);
-        if(gameObject.getSprite().getPosition().y < 0)
-            gameObject.getSprite().setPosition(gameObject.getSprite().getPosition().x, 0);
+        if(sprite.getPosition().y + textureSize.height > window.getSize().y)
+            sprite.setPosition(sprite.getPosition().x, window.getSize().y - textureSize.height);
+        if(sprite.getPosition().y < 0)
+            sprite.setPosition(sprite.getPosition().x, 0);
     }
 }

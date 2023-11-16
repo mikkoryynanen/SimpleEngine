@@ -14,10 +14,7 @@ int main()
     modifyCurrentWorkingDirectory();
 
     Engine engine;
-    if(!engine.start())
-    {
-        engine.stop();
-    }
+    engine.start();
 
     return 0;
 }
