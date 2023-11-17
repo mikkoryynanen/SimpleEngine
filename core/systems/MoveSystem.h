@@ -6,13 +6,11 @@
 #include "../components/GameObject.h"
 #include "../components/IInputable.hpp"
 
-class MoveSystem
+class MoveSystem final
 {
 private:
     sf::Vector2i inputVector;
 
 public:
-    void update(entt::registry& registry, float deltaTime, sf::Window &window);
-
-    const sf::Vector2i getInputVector() const { return inputVector; }
+    void update(entt::registry& registry, float deltaTime, sf::Window& window);
 };

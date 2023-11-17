@@ -28,7 +28,10 @@ add_executable(${PROJECT_NAME}
         core/entities/TestObject.cpp
         core/entities/AIBasicMovement.hpp
         core/systems/AiSystem.cpp
-        core/systems/AiSystem.hpp)
+        core/systems/AiSystem.hpp
+        core/entities/Collider.hpp
+        core/systems/CollisionSystem.cpp
+        core/systems/CollisionSystem.hpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT)
 
