@@ -13,7 +13,7 @@
 #include "../systems/RenderSystem.h"
 
 #include "State.hpp"
-
+#include "../systems/AiSystem.hpp"
 
 class PlayState final : public State
 {
@@ -23,6 +23,7 @@ private:
     GameTimeSystem timeSystem;
     MoveSystem moveSystem;
     RenderSystem renderSystem;
+    AISystem aiSystem;
 
 public:
     PlayState(sf::RenderWindow& window) : State(window) { };

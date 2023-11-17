@@ -4,9 +4,11 @@
 
 void PlayState::update()
 {
-    // Player works as the container for components
+    // Create state/scenes objects
     Player player(registry, sf::Vector2f { 400,300 });
-    TestObject testObject(registry, sf::Vector2f { 200, 150});
+    TestObject testObject(registry, sf::Vector2f { 350, 0});
+    TestObject testObject1(registry, sf::Vector2f { 150, 0});
+    TestObject testObject2(registry, sf::Vector2f { 50, 0});
 
     sf::Event event = {};
     while (isRunning)
@@ -26,5 +28,6 @@ void PlayState::update()
 
         moveSystem.update(registry, timeSystem.getDeltaTime(), window);
         renderSystem.update(registry, window);
+        aiSystem.update(registry, window, timeSystem.getDeltaTime());
     }
 }

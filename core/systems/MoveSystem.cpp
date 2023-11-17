@@ -11,7 +11,6 @@ void MoveSystem::update(entt::registry& registry, float deltaTime, sf::Window& w
     for(auto entity: view) {
         auto& gameObject = view.get<GameObject>(entity);
         auto& sprite = gameObject.getSprite();
-        sf::Vector2f movement(0.0f, 0.0f);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             inputVector.y = -1;
