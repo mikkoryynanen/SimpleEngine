@@ -16,6 +16,6 @@ public:
         registry.emplace<GameObject>(projectile, sf::Color::Red, initialPosition);
         auto& go = registry.get<GameObject>(projectile);
         go.setDirection(sf::Vector2i { 0, -1});
-        go.setClamped(false);
+        go.flags.setFlag(DESTROY_OUTSIDE_SCREEN);
     }
 };

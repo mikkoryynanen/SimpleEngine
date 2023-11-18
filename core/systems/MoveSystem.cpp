@@ -22,7 +22,7 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
                 gameObject.getDirection().y * accelerationValue * deltaTime);
         gameObject.position = sprite.getPosition();
 
-        if (gameObject.isClamped())
+        if (gameObject.flags.hasFlag(CLAMP_FOR_SCREEN))
         {
             // Do not allow movement beyond screen borders
             if(sprite.getPosition().x + textureRect.width > window.getSize().x)
@@ -35,14 +35,14 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
             if(sprite.getPosition().y < 0)
                 sprite.setPosition(sprite.getPosition().x, 0);
         }
-        else
+        else if (gameObject.flags.hasFlag(DESTROY_OUTSIDE_SCREEN))
         {
             // Cleanup objects that go beyond the screen
-            bool isBeyondScreenX = sprite.getPosition().x + textureRect.width > window.getSize().x || sprite.getPosition().x < 0;
-            bool isBeyondScreenY = sprite.getPosition().y + textureRect.height > window.getSize().y || sprite.getPosition().y < 0;
+            bool isBeyondScreenX = sprite.getPosition().x + textureRect.width > window.getSize().x || sprite.getPosition().x < -textureRect.width;
+            bool isBeyondScreenY = sprite.getPosition().y + textureRect.height > window.getSize().y || sprite.getPosition().y < -textureRect.height;
             if (isBeyondScreenX || isBeyondScreenY)
             {
-                
+                registry.remove<GameObject>(entity);
             }
         }
     }

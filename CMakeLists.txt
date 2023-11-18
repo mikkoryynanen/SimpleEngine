@@ -44,7 +44,8 @@ add_executable(${PROJECT_NAME}
         core/entities/Collider.hpp
         core/systems/InputSystem.cpp
         core/systems/InputSystem.hpp
-        core/entities/Projectile.hpp)
+        core/entities/Projectile.hpp
+        core/types/ObjectFlags.hpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT loguru::loguru)
 

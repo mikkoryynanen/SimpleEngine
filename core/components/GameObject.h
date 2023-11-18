@@ -10,7 +10,6 @@ struct GameObject final : public Entity
 private:
     sf::Sprite sprite;
     sf::Vector2i direction;
-    bool clampToScreen = true;
 
 public:
     GameObject(sf::Color color, sf::Vector2f initialPosition);
@@ -20,7 +19,4 @@ public:
 
     sf::Vector2i getDirection() const { return direction; }
     void setDirection(const sf::Vector2i newDirection) { direction = newDirection; }
-
-    bool isClamped() const { return clampToScreen; }
-    void setClamped(bool isClamped) { clampToScreen = isClamped; }
 };
