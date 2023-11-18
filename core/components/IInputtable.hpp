@@ -6,11 +6,11 @@
 
 enum Directions { None, Up, Down, Left, Right };
 
+// Struct of data referring to game object that can receive input
 struct IInputtable final
 {
 
 private:
-    sf::Vector2i inputVector;
     std::unordered_map<sf::Keyboard::Key, Directions> mappedKeys = {
             {sf::Keyboard::Unknown, None},
             {sf::Keyboard::W, Up},
@@ -20,12 +20,6 @@ private:
     };
 
 public:
-
-    const sf::Vector2i& getInputVector() const { return inputVector;  }
-    void setInputVector(sf::Vector2i newVector)
-    {
-        inputVector = newVector;
-    }
     sf::Keyboard::Key getBoundKey(const Directions& direction)
     {
         for (const auto& pair : mappedKeys)

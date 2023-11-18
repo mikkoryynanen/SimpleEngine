@@ -10,7 +10,7 @@
 TestObject::TestObject(entt::registry& registry, const sf::Vector2f& initialPosition)
 {
     const auto testObj = registry.create();
-    registry.emplace<GameObject>(testObj, 50.f, sf::Color::Green, initialPosition);
+    registry.emplace<GameObject>(testObj, sf::Color::White, initialPosition);
     registry.emplace<AIBasicMovement>(testObj);
     registry.emplace<Collider>(testObj);
 

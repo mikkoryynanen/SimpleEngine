@@ -21,6 +21,18 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 ############################################################
 
+# ================================================================================
+# Loguru
+include(FetchContent)
+FetchContent_Declare(LoguruGitRepo
+        GIT_REPOSITORY "https://github.com/emilk/loguru"
+        GIT_TAG        "master"
+)
+
+set(LOGURU_WITH_STREAMS TRUE)
+FetchContent_MakeAvailable(LoguruGitRepo)
+# ================================================================================
+
 add_executable(${PROJECT_NAME}
         main.cpp core/Engine.cpp core/Engine.h core/entities/Entity.cpp core/entities/Entity.h core/components/GameObject.cpp core/components/GameObject.h core/systems/MoveSystem.cpp core/systems/MoveSystem.h core/utils/ConfigReader.hpp core/systems/RenderSystem.cpp core/systems/RenderSystem.h core/entities/Player.hpp core/entities/Player.cpp core/state/State.cpp core/state/State.hpp core/state/StateMachine.cpp core/state/StateMachine.hpp core/state/PlayState.hpp core/state/PlayState.cpp core/state/IntroState.hpp
         core/components/IInputtable.hpp
@@ -31,7 +43,8 @@ add_executable(${PROJECT_NAME}
         core/systems/AiSystem.hpp
         core/entities/Collider.hpp
         core/systems/InputSystem.cpp
-        core/systems/InputSystem.hpp)
+        core/systems/InputSystem.hpp
+        core/entities/Projectile.hpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT loguru::loguru)
 

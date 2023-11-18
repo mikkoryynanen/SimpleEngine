@@ -11,6 +11,7 @@
 #include "state/PlayState.hpp"
 
 class Engine {
+
 private:
     sf::RenderWindow window;
     StateMachine stateMachine;

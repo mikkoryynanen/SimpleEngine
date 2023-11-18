@@ -5,7 +5,7 @@
 void PlayState::update()
 {
     // Create state/scenes objects
-    Player player(registry, sf::Vector2f { 400,300 });
+    Player player(registry, sf::Vector2f{400, 300});
     TestObject testObject(registry, sf::Vector2f { 350, 0});
     TestObject testObject1(registry, sf::Vector2f { 150, 0});
     TestObject testObject2(registry, sf::Vector2f { 50, 0});
@@ -25,8 +25,10 @@ void PlayState::update()
             }
         }
 
+        player.update(timeSystem.getDeltaTime());
+
         inputSystem.update(registry, window);
-        moveSystem.update(registry, timeSystem.getDeltaTime(), window);
+        moveSystem.update(registry, window, timeSystem.getDeltaTime());
         renderSystem.update(registry, window);
         aiSystem.update(registry, window, timeSystem.getDeltaTime());
     }

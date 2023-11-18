@@ -16,8 +16,9 @@ void InputSystem::update(entt::registry& registry, sf::Window& window)
     {
         auto& gameObject = view.get<GameObject>(entity);
         auto& inputtable = view.get<IInputtable>(entity);
-        sf::Vector2i inputVector;
 
+        // Movement
+        sf::Vector2i inputVector;
         if (sf::Keyboard::isKeyPressed(inputtable.getBoundKey(Directions::Up)))
             inputVector.y = -1;
         else if (sf::Keyboard::isKeyPressed(inputtable.getBoundKey(Directions::Down)))
@@ -32,6 +33,6 @@ void InputSystem::update(entt::registry& registry, sf::Window& window)
         else
             inputVector.x = 0;
 
-        inputtable.setInputVector(inputVector);
+        gameObject.setDirection(inputVector);
     }
 }
