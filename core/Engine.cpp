@@ -8,13 +8,6 @@ Engine::Engine()
     // Pretty much everything depends on this,
     // make sure loading this is successful before moving any further
     ConfigReader configReader;
-    if(!configReader.load())
-    {
-        window.close();
-
-        std::cout << "Failed to load config file" << std::endl;
-    }
-
     window.create(sf::VideoMode(
             std::stoi(configReader.getValue("WindowWidth")),
             std::stoi(configReader.getValue("WindowWidth"))),

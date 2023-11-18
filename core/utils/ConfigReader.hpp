@@ -15,8 +15,7 @@ private:
     std::string delimiter = ":";
     std::unordered_map<std::string, std::string> configData;
 
-public:
-    bool load()
+    void load()
     {
         std::fstream file;
         file.open(CONFIG_FILENAME, std::ios::in);
@@ -39,15 +38,19 @@ public:
                 }
             }
             file.close();
-
-            return true;
+            return;
         }
 
-        std::cout << "Failed to open configuration file\n";
-        return false;
+        throw std::runtime_error("Failed to open configuration file");
     }
 
-    inline std::string& getValue(const std::string& token)
+public:
+    ConfigReader()
+    {
+        load();
+    }
+
+    const std::string& getValue(const std::string& token) const
     {
         return configData.at(token);
     }

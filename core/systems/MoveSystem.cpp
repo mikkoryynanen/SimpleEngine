@@ -6,35 +6,24 @@ void MoveSystem::update(entt::registry& registry, float deltaTime, sf::Window& w
 {
     constexpr float accelerationValue = 550.f;
 
-    auto view = registry.view<IInputable, GameObject>();
+    auto view = registry.view<IInputtable, GameObject>();
     std::vector<GameObject*> inputGameObjects;
+
+    // TODO We currently only have one player, but reconsider adding this logic to a loop if we have more than one player
 
     for(auto entity: view) {
         auto& gameObject = view.get<GameObject>(entity);
+        auto& inputtable = view.get<IInputtable>(entity);
         auto& sprite = gameObject.getSprite();
         auto& textureRect = sprite.getTextureRect();
 
         inputGameObjects.push_back(&gameObject);
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            inputVector.y = -1;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            inputVector.y = 1;
-        else
-            inputVector.y = 0;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            inputVector.x = -1;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            inputVector.x = 1;
-        else
-            inputVector.x = 0;
-
 //        std::cout << inputVector.x << inputVector.y << std::endl;
 
         sprite.move(
-                inputVector.x * accelerationValue * deltaTime,
-                inputVector.y * accelerationValue * deltaTime);
+                inputtable.getInputVector().x * accelerationValue * deltaTime,
+                inputtable.getInputVector().y * accelerationValue * deltaTime);
 
         // Clamp movement
         if(sprite.getPosition().x + textureRect.width > window.getSize().x)
@@ -49,7 +38,7 @@ void MoveSystem::update(entt::registry& registry, float deltaTime, sf::Window& w
     }
 
     // Check for collisions
-    auto colliderView = registry.view<Collider, GameObject>(entt::exclude<IInputable>);
+    auto colliderView = registry.view<Collider, GameObject>(entt::exclude<IInputtable>);
     for (auto entity: colliderView)
     {
         auto& colliderObj = view.get<GameObject>(entity);

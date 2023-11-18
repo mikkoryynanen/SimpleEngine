@@ -23,15 +23,15 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(${PROJECT_NAME}
         main.cpp core/Engine.cpp core/Engine.h core/entities/Entity.cpp core/entities/Entity.h core/components/GameObject.cpp core/components/GameObject.h core/systems/MoveSystem.cpp core/systems/MoveSystem.h core/utils/ConfigReader.hpp core/systems/RenderSystem.cpp core/systems/RenderSystem.h core/entities/Player.hpp core/entities/Player.cpp core/state/State.cpp core/state/State.hpp core/state/StateMachine.cpp core/state/StateMachine.hpp core/state/PlayState.hpp core/state/PlayState.cpp core/state/IntroState.hpp
-        core/components/IInputable.hpp
+        core/components/IInputtable.hpp
         core/entities/TestObject.hpp
         core/entities/TestObject.cpp
         core/entities/AIBasicMovement.hpp
         core/systems/AiSystem.cpp
         core/systems/AiSystem.hpp
         core/entities/Collider.hpp
-        core/systems/CollisionSystem.cpp
-        core/systems/CollisionSystem.hpp)
+        core/systems/InputSystem.cpp
+        core/systems/InputSystem.hpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT)
 

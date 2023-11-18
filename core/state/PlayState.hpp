@@ -14,6 +14,7 @@
 
 #include "State.hpp"
 #include "../systems/AiSystem.hpp"
+#include "../systems/InputSystem.hpp"
 
 class PlayState final : public State
 {
@@ -21,6 +22,7 @@ private:
     entt::registry registry;
 
     GameTimeSystem timeSystem;
+    InputSystem inputSystem;
     MoveSystem moveSystem;
     RenderSystem renderSystem;
     AISystem aiSystem;

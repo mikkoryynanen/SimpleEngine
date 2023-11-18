@@ -15,17 +15,17 @@ void PlayState::update()
     {
         timeSystem.update();
 
-        while (window.pollEvent(event))
+        sf::Event event;
+        while(window.pollEvent(event))
         {
-            switch (event.type)
+            if (event.type == sf::Event::Closed)
             {
-                case sf::Event::Closed:
-                    isRunning = false;
-                    window.close();
-                    break;
+                isRunning = false;
+                window.close();
             }
         }
 
+        inputSystem.update(registry, window);
         moveSystem.update(registry, timeSystem.getDeltaTime(), window);
         renderSystem.update(registry, window);
         aiSystem.update(registry, window, timeSystem.getDeltaTime());

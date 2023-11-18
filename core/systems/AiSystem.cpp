@@ -18,7 +18,6 @@ void AISystem::update(entt::registry& registry, sf::Window& window, float deltaT
         auto& gameObject = view.get<GameObject>(entity);
         auto& sprite = gameObject.getSprite();
 
-
         float x = AMPLITUDE * std::sin(FREQUENCY * sprite.getPosition().y);
         x += STEP_SIZE * deltaTime;
 
