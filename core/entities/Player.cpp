@@ -16,6 +16,7 @@ Player::Player(entt::registry& registry, const sf::Vector2f& initialPosition)
     registry.emplace<Collider>(entity);
 
     auto& go = registry.get<GameObject>(entity);
+    go.name = "Player";
     go.flags.setFlag(CLAMP_FOR_SCREEN);
 
     auto& sprite = go.getSprite();

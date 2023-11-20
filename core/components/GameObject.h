@@ -4,8 +4,9 @@
 
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
+#include "IDamageable.hpp"
 
-struct GameObject final : public Entity
+struct GameObject final : public Entity, IDamageable
 {
 private:
     sf::Sprite sprite;
@@ -19,4 +20,6 @@ public:
 
     sf::Vector2i getDirection() const { return direction; }
     void setDirection(const sf::Vector2i newDirection) { direction = newDirection; }
+
+    void takeDamage(int damage) override;
 };

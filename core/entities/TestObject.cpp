@@ -15,6 +15,9 @@ TestObject::TestObject(entt::registry& registry, const sf::Vector2f& initialPosi
     registry.emplace<Collider>(testObj);
 
     auto& go = registry.get<GameObject>(testObj);
+    go.name = "Enemy";
+    go.collisionLayers.setFlag(PROJECTILE);
+    go.collisionLayers.setFlag(ENEMY);
     auto& sprite = go.getSprite();
     sprite.setPosition(initialPosition);
 }

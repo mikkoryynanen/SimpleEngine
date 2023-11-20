@@ -13,9 +13,14 @@ public:
     Projectile(entt::registry& registry, const sf::Vector2f& initialPosition)
     {
         const auto projectile = registry.create();
+
         registry.emplace<GameObject>(projectile, sf::Color::Red, initialPosition);
         auto& go = registry.get<GameObject>(projectile);
         go.setDirection(sf::Vector2i { 0, -1});
-        go.flags.setFlag(DESTROY_OUTSIDE_SCREEN);
+        go.name = "Projectile";
+        go.collisionLayers.setFlag(PROJECTILE);
+//        go.flags.setFlag(DESTROY_OUTSIDE_SCREEN);
+
+        registry.emplace<Collider>(projectile);
     }
 };

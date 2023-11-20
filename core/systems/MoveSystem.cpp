@@ -11,7 +11,7 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
     constexpr float accelerationValue = 550.f;
     auto view = registry.view<GameObject>();
 
-    for(auto entity: view) {
+    for(const auto& entity: view) {
         auto& gameObject = view.get<GameObject>(entity);
         auto& sprite = gameObject.getSprite();
         auto& textureRect = sprite.getTextureRect();
@@ -42,27 +42,54 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
             bool isBeyondScreenY = sprite.getPosition().y + textureRect.height > window.getSize().y || sprite.getPosition().y < -textureRect.height;
             if (isBeyondScreenX || isBeyondScreenY)
             {
-                registry.remove<GameObject>(entity);
+                gameObject.flags.setFlag(QUEUE_FOR_DESTROY);
             }
         }
     }
 
     // Check for collisions
-    auto colliderView = registry.view<Collider, GameObject>(entt::exclude<IInputtable>);
+    auto colliderView= registry.view<Collider, GameObject>();
     for (auto entity: colliderView)
     {
-        auto colliderObj = view.get<GameObject>(entity);
+        auto colliderObj = colliderView.get<GameObject>(entity);
+        auto colliderObjBounds= colliderObj.getSprite().getGlobalBounds();
 
-        // Check if this object collides with anything
+        for (auto otherEntity : colliderView)
+        {
+            auto otherObj = colliderView.get<GameObject>(otherEntity);
+            if (colliderObj.name == otherObj.name)
+            {
+                continue;
+            }
+
+            // Check for collision layers
+            if ((colliderObj.collisionLayers.getFlags() & otherObj.collisionLayers.getFlags()) == 0)
+            {
+                continue;
+            }
+
+            auto otherBounds = otherObj.getSprite().getGlobalBounds();
+            if (colliderObjBounds.intersects(otherBounds))
+            {
+                otherObj.takeDamage(100);
+
+                // Update the game object in the registry
+                registry.patch<GameObject>(otherEntity, [](GameObject& go)
+                {
+                    go.flags.setFlag(QUEUE_FOR_DESTROY);
+                });
+            }
+        }
+
+        // Check if input objects have collided with anything
         for (auto& inputGameObject : inputGameObjects)
         {
-            auto objectBounds = inputGameObject->getSprite().getGlobalBounds();
-            auto otherColliderBounds = colliderObj.getSprite().getGlobalBounds();
-
+            auto inputObjectBounds = inputGameObject->getSprite().getGlobalBounds();
             // TODO this intersection can occur when inside the object
-            if (objectBounds.intersects(otherColliderBounds))
+            if (inputObjectBounds.intersects(colliderObjBounds))
             {
-//                std::cout << "HIT\n";
+                LOG_F(INFO, "HIT");
+//                colliderObj.flags.setFlag(QUEUE_FOR_DESTROY);
 //                inputGameObject->getSprite().setColor(sf::Color::Red);
             }
         }
