@@ -5,14 +5,18 @@
 #include "../entities/Player.hpp"
 #include "../components/GameObject.h"
 #include "../components/IInputtable.hpp"
+#include "BaseSystem.hpp"
 
-class MoveSystem final
+class MoveSystem final : public BaseSystem
 {
-private:
-    std::vector<GameObject*> inputGameObjects;
-
-    void moveInputtables(entt::registry& registry, sf::Window& window, float deltaTime);
-
 public:
-    void update(entt::registry& registry, sf::Window& window, float deltaTime);
+    MoveSystem(entt::registry& registry, sf::Window& window);
+
+    void update(float deltaTime);
+
+private:
+    sf::Window* m_window;
+    std::vector<GameObject*> m_inputGameObjects;
+
+    void moveInputtables(float deltaTime);
 };

@@ -1,15 +1,21 @@
 #include "MoveSystem.h"
 #include <loguru.hpp>
 
-void MoveSystem::update(entt::registry& registry, sf::Window& window, float deltaTime)
+MoveSystem::MoveSystem(entt::registry& registry, sf::Window& window)
+        : BaseSystem(registry)
 {
-    moveInputtables(registry, window, deltaTime);
+    m_window = &window;
 }
 
-void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, float deltaTime)
+void MoveSystem::update(float deltaTime)
+{
+    moveInputtables(deltaTime);
+}
+
+void MoveSystem::moveInputtables(float deltaTime)
 {
     constexpr float accelerationValue = 550.f;
-    auto view = registry.view<GameObject>();
+    auto view = m_registry.view<GameObject>();
 
     for(const auto& entity: view) {
         auto& gameObject = view.get<GameObject>(entity);
@@ -25,21 +31,21 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
         if (gameObject.flags.hasFlag(CLAMP_FOR_SCREEN))
         {
             // Do not allow movement beyond screen borders
-            if(sprite.getPosition().x + textureRect.width > window.getSize().x)
-                sprite.setPosition(window.getSize().x - textureRect.width, sprite.getPosition().y);
+            if(sprite.getPosition().x + textureRect.width > m_window->getSize().x)
+                sprite.setPosition(m_window->getSize().x - textureRect.width, sprite.getPosition().y);
             if(sprite.getPosition().x < 0)
                 sprite.setPosition(0, sprite.getPosition().y);
 
-            if(sprite.getPosition().y + textureRect.height > window.getSize().y)
-                sprite.setPosition(sprite.getPosition().x, window.getSize().y - textureRect.height);
+            if(sprite.getPosition().y + textureRect.height > m_window->getSize().y)
+                sprite.setPosition(sprite.getPosition().x, m_window->getSize().y - textureRect.height);
             if(sprite.getPosition().y < 0)
                 sprite.setPosition(sprite.getPosition().x, 0);
         }
         else if (gameObject.flags.hasFlag(DESTROY_OUTSIDE_SCREEN))
         {
             // Cleanup objects that go beyond the screen
-            bool isBeyondScreenX = sprite.getPosition().x + textureRect.width > window.getSize().x || sprite.getPosition().x < -textureRect.width;
-            bool isBeyondScreenY = sprite.getPosition().y + textureRect.height > window.getSize().y || sprite.getPosition().y < -textureRect.height;
+            bool isBeyondScreenX = sprite.getPosition().x + textureRect.width > m_window->getSize().x || sprite.getPosition().x < -textureRect.width;
+            bool isBeyondScreenY = sprite.getPosition().y + textureRect.height > m_window->getSize().y || sprite.getPosition().y < -textureRect.height;
             if (isBeyondScreenX || isBeyondScreenY)
             {
                 gameObject.flags.setFlag(QUEUE_FOR_DESTROY);
@@ -47,8 +53,9 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
         }
     }
 
+    // TODO Move this to collision system?
     // Check for collisions
-    auto colliderView= registry.view<Collider, GameObject>();
+    auto colliderView= m_registry.view<Collider, GameObject>();
     for (auto entity: colliderView)
     {
         auto colliderObj = colliderView.get<GameObject>(entity);
@@ -57,6 +64,7 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
         for (auto otherEntity : colliderView)
         {
             auto otherObj = colliderView.get<GameObject>(otherEntity);
+            // TODO could have a bit better check here
             if (colliderObj.name == otherObj.name)
             {
                 continue;
@@ -71,18 +79,21 @@ void MoveSystem::moveInputtables(entt::registry& registry, sf::Window& window, f
             auto otherBounds = otherObj.getSprite().getGlobalBounds();
             if (colliderObjBounds.intersects(otherBounds))
             {
-                otherObj.takeDamage(100);
-
-                // Update the game object in the registry
-                registry.patch<GameObject>(otherEntity, [](GameObject& go)
+                // TODO This logic could be somewhere else
+                if (otherObj.takeDamage(100))
                 {
-                    go.flags.setFlag(QUEUE_FOR_DESTROY);
-                });
+                    m_registry.remove<GameObject>(otherEntity);
+                }
+
+                if (colliderObj.takeDamage(100))
+                {
+                    m_registry.remove<GameObject>(entity);
+                }
             }
         }
 
         // Check if input objects have collided with anything
-        for (auto& inputGameObject : inputGameObjects)
+        for (auto& inputGameObject : m_inputGameObjects)
         {
             auto inputObjectBounds = inputGameObject->getSprite().getGlobalBounds();
             // TODO this intersection can occur when inside the object

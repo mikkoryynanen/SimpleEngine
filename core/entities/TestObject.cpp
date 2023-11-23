@@ -18,6 +18,8 @@ TestObject::TestObject(entt::registry& registry, const sf::Vector2f& initialPosi
     go.name = "Enemy";
     go.collisionLayers.setFlag(PROJECTILE);
     go.collisionLayers.setFlag(ENEMY);
+    go.setMaxHealth(100);
+
     auto& sprite = go.getSprite();
     sprite.setPosition(initialPosition);
 }

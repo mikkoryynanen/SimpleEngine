@@ -18,12 +18,10 @@ GameObject::GameObject(sf::Color color, sf::Vector2f initialPosition)
     sprite.setPosition(initialPosition);
 }
 
-void GameObject::takeDamage(int damage)
+bool GameObject::takeDamage(int damage)
 {
     reduceHealth(damage);
-    if (getHealth())
-    {
-        LOG_F(INFO, "%s destroyed", name.c_str());
-        flags.setFlag(QUEUE_FOR_DESTROY);
-    }
+    const int health = getHealth();
+    LOG_F(INFO, "%s current health is %d", name.c_str(), health);
+    return health <= 0;
 }

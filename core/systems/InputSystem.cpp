@@ -6,7 +6,7 @@
 #include "../components/GameObject.h"
 #include "../components/IInputtable.hpp"
 
-void InputSystem::update(entt::registry& registry, sf::Window& window)
+void InputSystem::update(entt::registry& registry)
 {
     auto view = registry.view<IInputtable, GameObject>();
 

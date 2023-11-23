@@ -12,6 +12,6 @@ class InputSystem final {
 
 public:
 
-    void update(entt::registry& registry, sf::Window& window);
+    void update(entt::registry& registry);
 
 };

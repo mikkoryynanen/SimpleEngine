@@ -4,14 +4,16 @@
 
 class IDamageable
 {
+public:
+    void setMaxHealth(int value) { maxHealth = value; health = value; }
+
 private:
-    int health;
     int maxHealth = 100;    // TODO this could be in configurable file
+    int health = maxHealth;
 
 protected:
-    virtual void reduceHealth(int value) { health -= value; };
+    void reduceHealth(int value) { health -= value; };
     int getHealth() const { return health; }
 
-public:
-    virtual void takeDamage(int damage) = 0;
+    virtual bool takeDamage(int damage) = 0;
 };

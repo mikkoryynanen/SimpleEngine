@@ -28,7 +28,7 @@ private:
     AISystem aiSystem;
 
 public:
-    PlayState(sf::RenderWindow& window) : State(window) { };
+    explicit PlayState(sf::RenderWindow& window) : State(window), moveSystem(registry, window) { };
 
     void update() override;
 };

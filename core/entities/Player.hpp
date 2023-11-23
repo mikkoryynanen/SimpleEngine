@@ -9,6 +9,11 @@
 
 class Player final
 {
+public:
+    Player(entt::registry& registry, const sf::Vector2f& initialPosition);
+
+    void update(float deltaTime);
+
 private:
     // TODO Might have to figure out a better place for this, this pattern should reoccur when we are implementing firing enemies
     entt::registry& registryRef;
@@ -16,10 +21,5 @@ private:
 
     float fireTimer = 0.f;
     float fireRate = .75f;
-
-public:
-    Player(entt::registry &registry, const sf::Vector2f &initialPosition);
-
-    void update(float deltaTime);
 
 };

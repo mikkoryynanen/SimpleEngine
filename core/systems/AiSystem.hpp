@@ -8,7 +8,7 @@
 #include "entt/entity/registry.hpp"
 #include "MoveSystem.h"
 
-class AISystem {
+class AISystem final {
 public:
     void update(entt::registry& registry, sf::Window& window, float deltaTime);
 };

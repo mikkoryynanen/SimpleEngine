@@ -47,7 +47,9 @@ add_executable(${PROJECT_NAME}
         core/entities/Projectile.hpp
         core/types/ObjectFlags.hpp
         core/types/CollisionLayer.hpp
-        core/components/IDamageable.hpp)
+        core/components/IDamageable.hpp
+        core/systems/BaseSystem.hpp
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics EnTT loguru::loguru)
 
